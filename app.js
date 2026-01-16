@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bookRoutes = require("./routes/book");
+const userRoutes = require("./routes/user");
 
 const username = "trocipon";
 const password = "test0*?";
@@ -31,16 +33,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post("/api/books", (req, res, next) => {
-  console.log(req.body);
-  res.status(201).json({
-    message: "Objet créé !",
-  });
-});
-
-app.get("/api/books", (req, res, next) => {
-  const books = [{}, {}];
-  res.status(200).json(books);
-});
+app.use("/api/books", bookRoutes);
+app.use("/api/auth", userRoutes);
 
 module.exports = app;
