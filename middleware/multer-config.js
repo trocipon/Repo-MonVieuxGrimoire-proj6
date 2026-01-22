@@ -37,7 +37,6 @@ const processImage = async (req, res, next) => {
     req.file.filename = fileName;
     next();
   } catch (error) {
-    console.error("Error processing image:", error);
     res.status(500).json({ error: "Internal server error." });
   }
 };

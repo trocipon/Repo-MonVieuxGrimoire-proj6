@@ -35,10 +35,7 @@ exports.modifyBook = (req, res, next) => {
       if (book.userId != req.auth.userId) {
         res.status(401).json({ message: "Not authorized" });
       } else {
-        Book.updateOne(
-          { _id: req.params.id },
-          { ...bookObject, _id: req.params.id },
-        )
+        Book.updateOne({ _id: req.params.id }, { ...bookObject, _id: req.params.id })
           .then(() => res.status(200).json({ message: "Objet modifié" }))
           .catch((error) => res.status(401).json({ error }));
       }
@@ -83,10 +80,8 @@ exports.getBestRatingBooks = async (req, res, next) => {
         return b.averageRating - a.averageRating;
       })
       .slice(0, 3);
-    console.log(topRated);
     res.status(200).json(topRated);
   } catch (error) {
-    console.log(error);
     res.status(400).json({ error });
   }
 };
@@ -98,32 +93,22 @@ exports.getAllBooks = (req, res, next) => {
 };
 
 exports.addRating = async (req, res) => {
-  console.log(req.body);
   try {
     const requestUserId = req.body.userId;
     const requestRating = req.body.rating;
-    const newRating = {
-      userId: requestUserId,
-      grade: requestRating,
-    };
+    const newRating = { userId: requestUserId, grade: requestRating };
 
     const book = await Book.findById(req.params.id);
-    const rateUserIdExists = book.ratings.some(
-      (rating) => rating.userId === requestUserId,
-    );
+    const rateUserIdExists = book.ratings.some((rating) => rating.userId === requestUserId);
 
-    if (
-      requestUserId === book.userId ||
-      (rateUserIdExists && requestRating >= 0 && requestRating <= 5)
-    ) {
+    if (requestUserId === book.userId || (rateUserIdExists && requestRating >= 0 && requestRating <= 5)) {
       return res.status(200).json(book);
     }
 
     book.ratings.push(newRating);
 
     const tableRating = book.ratings.map((rating) => rating.grade);
-    book.averageRating =
-      tableRating.reduce((a, b) => a + b, 0) / tableRating.length;
+    book.averageRating = tableRating.reduce((a, b) => a + b, 0) / tableRating.length;
     await book.save();
 
     return res.status(201).json(book);
