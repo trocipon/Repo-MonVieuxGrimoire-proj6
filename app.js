@@ -3,14 +3,9 @@ const mongoose = require("mongoose");
 const bookRoutes = require("./routes/book");
 const userRoutes = require("./routes/user");
 const path = require("path");
+require("dotenv").config();
 
-const username = "trocipon";
-const password = "test0*?";
-const cluster = "cluster0.ttmpigl.mongodb.net";
-const dbName = "mon_vieux_grimoire";
-const uri = `mongodb+srv://${username}:${encodeURIComponent(
-  password
-)}@${cluster}/${dbName}?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.MONGO_DB_USER}:${encodeURIComponent(process.env.MONGO_DB_PASSWORD)}@${process.env.MONGO_DB_CLUSTER}/${process.env.MONGO_DB_NAME}?retryWrites=true&w=majority`;
 
 mongoose
   .connect(uri)
@@ -23,14 +18,8 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
+  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
   next();
 });
 
