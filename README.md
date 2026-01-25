@@ -61,7 +61,15 @@ Mon Vieux Grimoire est une application web permettant de consulter et noter des 
    PORT=4000
    ```
 
-4. **Démarrez le serveur**
+4. **Ajout des images (drag & drop)**
+
+Les images associées aux livres ne sont pas versionnées dans ce dépôt.
+Un dossier `images-demo.zip` est transmis en annexe de ce projet. Après avoir cloné le projet :
+
+- Dézipper `images-demo.zip`
+- Copier son contenu dans le dossier `images/` à la racine du projet (par défaut : .gitkeep)
+
+5. **Démarrez le serveur**
    ```bash
    npm start
    ```
